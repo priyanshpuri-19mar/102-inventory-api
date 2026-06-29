@@ -7,58 +7,59 @@ import { Inventory } from './schema/inventory.schema';
 
 @Injectable()
 export class InventoryService {
-  http: any;
+
   constructor(
     @InjectModel(Inventory.name)
     private inventoryModel: Model<Inventory>,
-  ) {}
-
-  // create(createInventoryDto: CreateInventoryDto) {
-  //   return this.inventoryModel.create(createInventoryDto);
-  // }
-
-  // findAll() {
-  //   return this.inventoryModel.find().exec();
-  // }
-
-  async findOne(id: string) {
-    const inventory = await this.inventoryModel.findById(id).exec();
-    if (!inventory) {
-      throw new NotFoundException(`Inventory #${id} not found`);
-    }
-    return inventory;
-  }
-
-  async update(id: string, updateInventoryDto: UpdateInventoryDto) {
-    const inventory = await this.inventoryModel
-      .findByIdAndUpdate(id, updateInventoryDto, { new: true })
-      .exec();
-    if (!inventory) {
-      throw new NotFoundException(`Inventory #${id} not found`);
-    }
-    return inventory;
-  }
-
-  async remove(id: string) {
-    const inventory = await this.inventoryModel.findByIdAndDelete(id).exec();
-    if (!inventory) {
-      throw new NotFoundException(`Inventory #${id} not found`);
-    }
-    return inventory;
-  }
-  getInventory() {
-    return this.http.get(
-      'http://localhost:3000/inventory'
-    );
-  }
+  ) { }
 
   async create(createInventoryDto: CreateInventoryDto) {
-    const inventory = new this.inventoryModel(createInventoryDto);
+
+    const inventory =
+      new this.inventoryModel(createInventoryDto);
+
     return inventory.save();
+
   }
 
   async findAll() {
+
     return this.inventoryModel.find();
+
   }
-  
+
+  async findOne(id: string) {
+
+    const inventory =
+      await this.inventoryModel.findById(id);
+
+    if (!inventory) {
+
+      throw new NotFoundException("Inventory not found");
+
+    }
+
+    return inventory;
+
+  }
+
+  async update(
+    id: string,
+    updateInventoryDto: UpdateInventoryDto,
+  ) {
+
+    return this.inventoryModel.findByIdAndUpdate(
+      id,
+      updateInventoryDto,
+      { new: true },
+    );
+
+  }
+
+  async remove(id: string) {
+
+    return this.inventoryModel.findByIdAndDelete(id);
+
+  }
+
 }
