@@ -22,8 +22,16 @@ export class InventoryService {
 
   }
 
-  async findAll() {
+  async findAll(search?: string) {
 
+    if(search){
+      return this.inventoryModel.find({
+        name: {
+          $regex: search,
+          $options: 'i'
+        }
+      })
+    }
     return this.inventoryModel.find();
 
   }

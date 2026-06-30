@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { CreateInventoryDto } from './dto/create-inventory.dto';
@@ -20,9 +21,15 @@ export class InventoryController {
     return this.inventoryService.create(createInventoryDto);
   }
 
+  // @Get()
+  // findAll() {
+  //   return this.inventoryService.findAll();
+  // }
+
+
   @Get()
-  findAll() {
-    return this.inventoryService.findAll();
+  findAll(@Query('search') search?: string) {
+    return this.inventoryService.findAll(search);
   }
 
   @Get(':id')
